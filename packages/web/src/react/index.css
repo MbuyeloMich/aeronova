@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap');
+
+:root {
+  --brand-bg-0: #070a0d;
+  --brand-bg-1: #101418;
+  --brand-surface: rgba(18, 24, 31, 0.84);
+  --brand-stroke: rgba(255, 255, 255, 0.12);
+  --brand-accent: #ff6a3d;
+  --brand-accent-alt: #3ad0c3;
+}
+
+@layer base {
+  body {
+    @apply bg-future-darkest text-white;
+    font-family: 'Sora', 'Avenir Next', 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(1200px 600px at 20% -10%, rgba(255, 106, 61, 0.16), transparent 55%),
+      radial-gradient(900px 500px at 90% 0%, rgba(58, 208, 195, 0.14), transparent 52%),
+      linear-gradient(180deg, var(--brand-bg-1), var(--brand-bg-0));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.008em;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply border rounded-lg;
+    border-color: var(--brand-stroke);
+    background: var(--brand-surface);
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px rgba(255, 106, 61, 0.28);
+  }
+
+  .text-glow-subtle {
+    text-shadow: 0 1px 16px rgba(58, 208, 195, 0.22);
+  }
+
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 106, 61, 0.35), rgba(58, 208, 195, 0.35));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
