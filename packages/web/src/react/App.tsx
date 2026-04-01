@@ -28,7 +28,7 @@ export function App() {
       <DebugPanel />
       
       {/* Global mode toggle + camera control container */}
-      <div className="fixed top-8 right-8 z-50 pointer-events-auto flex flex-col items-end gap-2">
+      <div className="fixed top-12 right-16 z-50 pointer-events-auto flex flex-col items-end gap-3">
         <ModeToggle />
         {/* camera control is only available in play mode */}
         {mode === 'play' && !isMobile && <CameraControls />}

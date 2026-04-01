@@ -55,7 +55,7 @@ export class Scene {
   }
 
   private setupScene(): void {
-    this.viewer.scene.globe.show = false;
+    this.viewer.scene.globe.show = true;
     this.scene.debugShowFramesPerSecond = true;
 
     // Disable default camera controller (we use custom cameras in play mode)
@@ -76,29 +76,40 @@ export class Scene {
   }
 
   private setupPostProcessing(): void {
+    // Defer bloom and HDR until terrain loads for faster initial load
     const bloom = this.viewer.scene.postProcessStages.bloom;
-    bloom.enabled = true;
+    bloom.enabled = false; // Start disabled
     bloom.uniforms.brightness = -0.5;
     bloom.uniforms.stepSize = 1.0;
     bloom.uniforms.sigma = 3.0;
     bloom.uniforms.delta = 1.5;
-    this.scene.highDynamicRange = true;
+    this.scene.highDynamicRange = false; // Start disabled
     this.viewer.scene.postProcessStages.exposure = 1.5;
     
+    this.viewer.scene.postProcessStages.fxaa.enabled = false; // Start disabled
+  }
+
+  public enablePostProcessing(): void {
+    // Enable post-processing after terrain loads
+    const bloom = this.viewer.scene.postProcessStages.bloom;
+    bloom.enabled = true;
+    this.scene.highDynamicRange = true;
     this.viewer.scene.postProcessStages.fxaa.enabled = true;
+    console.log('✨ Post-processing effects enabled');
   }
 
   private async loadTerrain(): Promise<void> {
     try {
+      // Start with lower quality for faster initial load
       this.tileset = await Cesium.createGooglePhotorealistic3DTileset(
         {
           onlyUsingWithGoogleGeocoder: true,
         },
         {
-          maximumScreenSpaceError: 24,
+          maximumScreenSpaceError: 32, // Start higher (faster)
           dynamicScreenSpaceError: true,
           dynamicScreenSpaceErrorDensity: 2.0e-4,
-          dynamicScreenSpaceErrorFactor: 24.0,
+          dynamicScreenSpaceErrorFactor: 32.0, // Faster adaptation
           dynamicScreenSpaceErrorHeightFalloff: 0.25,
           cullRequestsWhileMoving: true,
           cullRequestsWhileMovingMultiplier: 60.0,
@@ -109,6 +120,18 @@ export class Scene {
         }
       );
       this.primitives.add(this.tileset);
+      
+      console.log('🗺️ Terrain loaded - upgrading quality...');
+      
+      // Upgrade to higher quality after terrain settles
+      setTimeout(() => {
+        if (this.tileset) {
+          this.tileset.maximumScreenSpaceError = 24;
+          this.tileset.dynamicScreenSpaceErrorFactor = 24.0;
+        }
+        // Enable post-processing effects
+        this.enablePostProcessing();
+      }, 2000);
       
       this.setVehicleQualityMode('aircraft');
     } catch (error) {

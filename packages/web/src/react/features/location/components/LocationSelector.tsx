@@ -358,20 +358,21 @@ export function LocationSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="glass-panel px-4 py-2.5 hover:bg-white/10 transition-all duration-300 group flex items-center gap-2"
-        title="Teleport to Location"
+        className="bg-slate-900/80 border border-cyan-400/80 
+                   px-4 py-2.5 hover:bg-slate-800 hover:border-cyan-300 
+                   transition-all duration-300 text-cyan-100 hover:text-white text-xs font-medium 
+                   tracking-wide rounded-lg backdrop-blur-sm flex items-center gap-2 group shadow-lg"
+        title="Teleport to Location (T)"
       >
-        <svg className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 text-cyan-300 group-hover:text-cyan-100 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <span className="text-xs font-medium text-white/80 group-hover:text-white transition-colors">
-          Teleport
-        </span>
+        <span>Teleport</span>
       </button>
 
       {isOpen && (
-        <div className="absolute top-14 right-0 w-96 glass-panel animate-fade-in z-[60]">
+        <div className="absolute top-14 -right-2 w-96 glass-panel animate-fade-in z-[60]">
           <div className="p-3 border-b border-white/5 space-y-2.5">
             <div className="grid grid-cols-2 gap-2">
               <button
